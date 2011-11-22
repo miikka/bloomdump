@@ -1,5 +1,18 @@
 {
 	"name": "bloomdump",
-	"version": "v0.1.0",
+	"version": "0.1.0",
+	"author": "Miikka Koskinen <miikka.koskinen@iki.fi> (http://miikka.me/)",
+	"dependencies": {
+		"coffee-script": "1.1.x",
+		"canvas": "0.8.x",
+		"rational": "0.2.x"
+	},
+	"devDependcies": {
+		"vows": "0.5.x"
+	},
+	"engine": "node 0.6.x",
+	"scripts": {
+		"test": "vows --spec test/*-test.coffee"
+	},
 	"private": true
 }
