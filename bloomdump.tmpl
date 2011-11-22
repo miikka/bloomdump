@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bloom dump</title>
+		<script>
+			{{{ sha1 }}}
+			{{{ bloomfilter }}}
+
+			window.onload = function() {
+				$ = function(k) { return document.getElementById(k); }
+
+				canvas = $('filter');
+				backend = new CanvasBackend(canvas, '{{{ image }}}');
+				bf = new BloomFilter(backend, {{ m }}, {{ k }}, hex_sha1);
+
+				var inp = $("inp"),
+				    check = $("check"),
+				    result = $("result");
+
+				inp.onchange = function() {
+					result.innerHTML = window.bf.has(inp.value).toString();
+				};
+			};
+		</script>
+	</head>
+	<body>
+		<h1>Check if you're in {{ filename }}</h1>
+
+		<canvas width="800" height="400" id="filter" style="visible: false;">
+		</canvas>
+
+		<div style="float: right">
+			<input type="text" size="50" id="inp" /> 
+			<div id="result">
+			</div>
+		</div>
+	</body>
+</html>

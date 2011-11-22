@@ -1,0 +1,4 @@
+.*.swp
+mess/
+node_modules/
+png.node
