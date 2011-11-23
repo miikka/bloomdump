@@ -2,6 +2,7 @@
 	"name": "bloomdump",
 	"version": "0.1.0",
 	"author": "Miikka Koskinen <miikka.koskinen@iki.fi> (http://miikka.me/)",
+	"bin": "./bin/bloomdump.coffee",
 	"dependencies": {
 		"coffee-script": "1.1.x",
 		"canvas": "0.8.x",

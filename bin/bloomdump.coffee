@@ -1,3 +1,5 @@
+#!/usr/bin/env coffee
+
 fs   = require('fs')
 path = require('path')
 
@@ -6,8 +8,8 @@ CoffeeScript = require('coffee-script')
 Rational     = require('rational').Rational
 Mustache     = require('mustache')
 
-bloomfilter = require('./bloomfilter')
-sha1        = require('./vendor/sha1.js')
+bloomfilter = require('../lib/bloomfilter')
+sha1        = require('../vendor/sha1.js')
 
 BloomFilter   = bloomfilter.BloomFilter
 CanvasBackend = bloomfilter.CanvasBackend
@@ -21,7 +23,7 @@ parser = new Rational '''
 '''
 
 filename     = ""
-templatePath = "bloomdump.tmpl"
+templatePath = require.resolve("../bloomdump.tmpl")
 errorRate    = 0.01
 
 try
@@ -83,8 +85,8 @@ for line in lines
 png_image = bf.backend.toDataURL()
 
 ctx =
-	sha1:        fs.readFileSync('./vendor/sha1.js', 'utf-8')
-	bloomfilter: CoffeeScript.compile(fs.readFileSync('bloomfilter.coffee', 'utf-8'))
+	sha1:        fs.readFileSync(require.resolve('../vendor/sha1.js'), 'utf-8')
+	bloomfilter: CoffeeScript.compile(fs.readFileSync(require.resolve('../lib/bloomfilter.coffee'), 'utf-8'))
 	image:       png_image
 	m: 			 bf.m
 	k: 			 bf.k

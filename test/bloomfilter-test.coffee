@@ -6,7 +6,7 @@ sha1   = require('../vendor/sha1.js')
 
 Canvas = require('canvas')
 
-bloomfilter = require('../bloomfilter')
+bloomfilter = require('../lib/bloomfilter')
 
 BloomFilter   = bloomfilter.BloomFilter
 BufferBackend = bloomfilter.BufferBackend
