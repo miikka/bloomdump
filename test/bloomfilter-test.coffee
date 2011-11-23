@@ -18,6 +18,9 @@ testBackend = (name, createBackend, size) ->
 	batch["An empty #{name}"] =
 		topic: -> createBackend(size)
 
+		'should be big enough': (backend) ->
+			assert.ok(backend.size >= size)
+
 		'should have all bits unset': (backend)	->
 			for idx in [0...backend.size]
 				assert.equal(backend.at(idx), false)
@@ -46,6 +49,26 @@ suite = vows.describe('Bloom filter')
 
 suite.addBatch(testBackend('BufferBackend', ((size) -> new BufferBackend(size)), 49 * 3))
 suite.addBatch(testBackend('CanvasBackend', createCanvas, 49 * 3))
+
+suite.addBatch(
+	'Saved and loaded CanvasBackend':
+		topic: ->
+			size= 49 * 3
+
+			backend1 = createCanvas(size)
+			for idx in [0..size]
+				backend1.set(idx) if Math.floor(Math.random * 2) == 1
+
+			backend2 = createCanvas(size)
+			backend2.load(backend1.toDataURL())
+
+			[backend1, backend2]
+
+		'should be equivalent to the original backend': ([backend1, backend2]) ->
+			assert.ok(backend1.size == backend2.size)
+			for idx in [0..backend1.size]
+				assert.ok(backend1.at(idx) == backend2.at(idx))
+)
 
 suite.addBatch(
 	'An empty BloomFilter':

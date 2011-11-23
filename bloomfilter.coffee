@@ -31,8 +31,9 @@ root.CanvasBackend = class CanvasBackend
 	constructor: (canvas, url = null) ->
 		@ctx = canvas.getContext('2d')
 		@imageData = @ctx.getImageData(0, 0, canvas.width, canvas.height)
+		@size = canvas.width * canvas.height * 24
 		@load(url) if url?
-
+	
 	load: (url) ->
 		img = new Image()
 
@@ -41,9 +42,15 @@ root.CanvasBackend = class CanvasBackend
 				throw "Image is too large for the canvas"
 			@ctx.drawImage(img, 0, 0)
 			@imageData = @ctx.getImageData(0, 0, img.width, img.height) 
+			@size = @imageData.data.length / 4 * 24
 
 		img.src = url
-	
+		this
+
+	toDataURL: ->
+		@ctx.putImageData(@imageData, 0, 0)
+		@ctx.canvas.toDataURL()
+
 	posToCoord: (pos) ->
 		pixel = Math.floor(pos / 24)
 		byte = Math.floor((pos - pixel * 24) / 8)
@@ -56,6 +63,9 @@ root.CanvasBackend = class CanvasBackend
 	
 	set: (pos) ->
 		[pixel, byte, bit] = @posToCoord(pos)
+		# We set the alpha to 255 - otherwise the color data is lost or
+		# corrupted.
+		@imageData.data[pixel * 4 + 3] = 255
 		@imageData.data[pixel * 4 + byte] |= (1 << bit)
 
 # A backend for BloomFilter backed by Node.js buffers

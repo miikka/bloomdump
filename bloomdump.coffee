@@ -1,8 +1,8 @@
 fs   = require('fs')
 path = require('path')
 
+Canvas       = require('canvas')
 CoffeeScript = require('coffee-script')
-Png          = require('./png').Png
 Rational     = require('rational').Rational
 Mustache     = require('mustache')
 
@@ -10,7 +10,7 @@ bloomfilter = require('./bloomfilter')
 sha1        = require('./vendor/sha1.js')
 
 BloomFilter   = bloomfilter.BloomFilter
-BufferBackend = bloomfilter.BufferBackend
+CanvasBackend = bloomfilter.CanvasBackend
 
 parser = new Rational '''
 	bloomdump [OPTION...] filename
@@ -67,7 +67,8 @@ trim = (str) -> str.replace(/^\s*|\s*$/g, '')
 class EasyBloomFilter extends BloomFilter
 	constructor: (@capacity, @error_rate) ->
 		[m, k] = calculate_filter_length(@capacity, @error_rate)
-		backend = new BufferBackend(m * k)
+		canvas = new Canvas(Math.ceil(m/(24*400)), 400)
+		backend = new CanvasBackend(canvas)
 		super(backend, m, k, sha1.hex_sha1)
 
 lines = fs.readFileSync(filename, "utf-8").split("\n")
@@ -79,13 +80,12 @@ bf = new EasyBloomFilter(lines.length, 0.01)
 for line in lines
 	bf.add(trim(line))
 
-png = new Png(bf.backend.buffer, Math.ceil(bf.m/(24*400)), 400, 'rgb')
-png_image = png.encodeSync()
+png_image = bf.backend.toDataURL()
 
 ctx =
 	sha1:        fs.readFileSync('./vendor/sha1.js', 'utf-8')
 	bloomfilter: CoffeeScript.compile(fs.readFileSync('bloomfilter.coffee', 'utf-8'))
-	image:       'data:image/png;base64,' + png_image.toString('base64')
+	image:       png_image
 	m: 			 bf.m
 	k: 			 bf.k
 	filename:    path.basename(filename)
