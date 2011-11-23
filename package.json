@@ -7,10 +7,10 @@
 		"canvas": "0.8.x",
 		"rational": "0.2.x"
 	},
-	"devDependcies": {
+	"devDependencies": {
 		"vows": "0.5.x"
 	},
-	"engine": "node 0.6.x",
+	"engines": { "node": "0.6.x" },
 	"scripts": {
 		"test": "vows --spec test/*-test.coffee"
 	},

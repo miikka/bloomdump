@@ -1,4 +1,5 @@
 .*.swp
 mess/
 node_modules/
+npm-debug.log
 png.node
