@@ -15,6 +15,7 @@ Bloomdump depends on the following libraries for Node:
 
 * [CoffeeScript](http://jashkenas.github.com/coffee-script/)
 * [node-canvas](https://github.com/learnboost/node-canvas)
+* [mustache.js](https://github.com/janl/mustache.js/)
 * [Rational](https://github.com/nikhilm/rational)
 
 For running the tests, you also need
