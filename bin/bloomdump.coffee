@@ -77,8 +77,6 @@ lines = fs.readFileSync(filename, "utf-8").split("\n")
 
 bf = new EasyBloomFilter(lines.length, 0.01)
 
-#console.log(bf.m, bf.k)
-
 for line in lines
 	bf.add(trim(line))
 
