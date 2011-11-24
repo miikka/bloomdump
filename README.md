@@ -36,11 +36,14 @@ Create issues, fork, send pull requests at [GitHub](https://github.com/miikka/bl
 
 Bloomdump was originally created by [Miikka Koskinen](http://miikka.me/). It's
 based on Maciej Ceglowski's article [Using Bloom Filters][using-bloom-filters].
+A hat tip to [Adam Burmister][adam-burmister] for the idea of using canvas as a
+backend.
 
 Bloomdump is bundled with a [JavaScript SHA1 implementation][sha1]
 (`vendor/sha1.js`) created by Paul Johnston and others.
 
 [using-bloom-filters]: http://www.perl.com/pub/2004/04/08/bloom_filters.html
+[adam-burmister]: https://github.com/adamburmister/JavaScript-Bloom-Filter
 [sha1]: http://pajhome.org.uk/crypt/md5
 
 ## Copyright and licensing
