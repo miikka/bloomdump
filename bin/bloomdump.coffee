@@ -100,6 +100,8 @@ ctx =
 	image:       png_image
 	m: 			 bf.m
 	k: 			 bf.k
+	width:       bf.backend.ctx.canvas.width
+	height:      bf.backend.ctx.canvas.height
 	filename:    path.basename(filename)
 	version:     VERSION
 
