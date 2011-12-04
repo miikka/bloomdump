@@ -67,22 +67,3 @@ root.CanvasBackend = class CanvasBackend
 		# corrupted.
 		@imageData.data[pixel * 4 + 3] = 255
 		@imageData.data[pixel * 4 + byte] |= (1 << bit)
-
-# A backend for BloomFilter backed by Node.js buffers
-root.BufferBackend = class BufferBackend
-	constructor: (@size) ->
-		@buffer = new Buffer(Math.floor(@size / 8))
-		@buffer.fill(0)
-
-	posToByte: (pos) ->
-		byte = Math.floor(pos / 8)
-		bit = pos - byte * 8
-		[byte, bit]
-	
-	at: (pos) ->
-		[byte, bit] = @posToByte(pos)
-		(@buffer[byte] & (1 << bit)) > 0
-	
-	set: (pos) ->
-		[byte, bit] = @posToByte(pos)
-		@buffer[byte] = @buffer[byte] | (1 << bit)

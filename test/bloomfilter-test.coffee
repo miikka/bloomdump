@@ -9,7 +9,6 @@ Canvas = require('canvas')
 bloomfilter = require('../lib/bloomfilter')
 
 BloomFilter   = bloomfilter.BloomFilter
-BufferBackend = bloomfilter.BufferBackend
 CanvasBackend = bloomfilter.CanvasBackend
 
 testBackend = (name, createBackend, size) ->
@@ -47,7 +46,6 @@ createCanvas = (size) ->
 
 suite = vows.describe('Bloom filter')
 
-suite.addBatch(testBackend('BufferBackend', ((size) -> new BufferBackend(size)), 49 * 3))
 suite.addBatch(testBackend('CanvasBackend', createCanvas, 49 * 3))
 
 suite.addBatch(
@@ -72,14 +70,14 @@ suite.addBatch(
 
 suite.addBatch(
 	'An empty BloomFilter':
-		topic: -> new BloomFilter(new BufferBackend(49 * 3), 49, 3, sha1.hex_sha1)
+		topic: -> new BloomFilter(createCanvas(49*3), 49, 3, sha1.hex_sha1)
 
 		'should not contain any elements': (bf) ->
 			assert.equal(bf.has('test1'), false)
 
 	'A BloomFilter with one element':
 		topic: ->
-			bf = new BloomFilter(new BufferBackend(49 * 3), 49, 3, sha1.hex_sha1)
+			bf = new BloomFilter(createCanvas(49 * 3), 49, 3, sha1.hex_sha1)
 			bf.add('test1')
 
 		'should contain the element': (bf) ->
