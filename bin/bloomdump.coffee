@@ -1,7 +1,8 @@
 #!/usr/bin/env coffee
 
-fs   = require('fs')
-path = require('path')
+fs     = require('fs')
+path   = require('path')
+crypto = require('crypto')
 
 Canvas       = require('canvas')
 CoffeeScript = require('coffee-script')
@@ -9,7 +10,6 @@ Rational     = require('rational').Rational
 Mustache     = require('mustache')
 
 bloomfilter = require('../lib/bloomfilter')
-sha1        = require('../vendor/sha1.js')
 
 BloomFilter   = bloomfilter.BloomFilter
 CanvasBackend = bloomfilter.CanvasBackend
@@ -66,12 +66,17 @@ calculate_filter_length = (capacity, error_rate) ->
 
 trim = (str) -> str.replace(/^\s*|\s*$/g, '')
 
+hex_sha1 = (str) ->
+	sha1sum = crypto.createHash('sha1')
+	sha1sum.update(str)
+	sha1sum.digest('hex')
+
 class EasyBloomFilter extends BloomFilter
 	constructor: (@capacity, @error_rate) ->
 		[m, k] = calculate_filter_length(@capacity, @error_rate)
 		canvas = new Canvas(Math.ceil(m/(24*400)), 400)
 		backend = new CanvasBackend(canvas)
-		super(backend, m, k, sha1.hex_sha1)
+		super(backend, m, k, hex_sha1)
 
 lines = fs.readFileSync(filename, "utf-8").split("\n")
 
