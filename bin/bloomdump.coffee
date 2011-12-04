@@ -14,10 +14,13 @@ bloomfilter = require('../lib/bloomfilter')
 BloomFilter   = bloomfilter.BloomFilter
 CanvasBackend = bloomfilter.CanvasBackend
 
+VERSION = '0.1.0'
+
 parser = new Rational '''
 	bloomdump [OPTION...] filename
 	--
 	h,help              print this help
+	v,version           print Bloomdump version
 	t,template=         use the given template to generate HTML
 	e,error-rate=       the error rate of the generated Bloom filter [0.01]
 '''
@@ -31,6 +34,10 @@ try
 
 	if result.options.h
 		parser.usage()
+		process.exit(0)
+
+	if result.options.v
+		console.log('Bloomdump ' + VERSION)
 		process.exit(0)
 
 	filename = result.extras[2]
@@ -94,5 +101,6 @@ ctx =
 	m: 			 bf.m
 	k: 			 bf.k
 	filename:    path.basename(filename)
+	version:     VERSION
 
 console.log(Mustache.to_html(template, ctx))
