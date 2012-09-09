@@ -1,5 +1,5 @@
 root  = exports ? this
-Image = Image ? require('canvas').Image
+Image = if window then Image else require('canvas').Image
 
 # Generate k different hashes using the given hash function.
 make_hashes = (hash, k) ->
@@ -67,3 +67,23 @@ root.CanvasBackend = class CanvasBackend
 		# corrupted.
 		@imageData.data[pixel * 4 + 3] = 255
 		@imageData.data[pixel * 4 + byte] |= (1 << bit)
+
+
+root.TypedArrayBackend = class TypedArrayBackend
+	constructor: (@m) ->
+		buffer = new ArrayBuffer(Math.ceil(@m/8))
+		@array = new Uint8Array(buffer)
+		@size = @array.length * 8
+
+	posToCoord: (pos) ->
+		byte = Math.floor(pos/8)
+		bit = pos - byte * 8
+		[byte, bit]
+
+	at: (pos) ->
+		[byte, bit] = @posToCoord(pos)
+		!!(@array[byte] & (1 << bit))
+
+	set: (pos) ->
+		[byte, bit] = @posToCoord(pos)
+		@array[byte] |= (1 << bit)

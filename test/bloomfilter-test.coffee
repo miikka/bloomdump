@@ -10,6 +10,7 @@ bloomfilter = require('../lib/bloomfilter')
 
 BloomFilter   = bloomfilter.BloomFilter
 CanvasBackend = bloomfilter.CanvasBackend
+TypedArrayBackend = bloomfilter.TypedArrayBackend
 
 testBackend = (name, createBackend, size) ->
 	batch = {}
@@ -47,6 +48,7 @@ createCanvas = (size) ->
 suite = vows.describe('Bloom filter')
 
 suite.addBatch(testBackend('CanvasBackend', createCanvas, 49 * 3))
+suite.addBatch(testBackend('TypedArrayBackend', ((size) -> new TypedArrayBackend(size)), 49 * 3))
 
 suite.addBatch(
 	'Saved and loaded CanvasBackend':
