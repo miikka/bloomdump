@@ -1,5 +1,5 @@
-root   = exports ? this
-Image ?= require('canvas').Image
+root  = exports ? this
+Image = Image ? require('canvas').Image
 
 # Generate k different hashes using the given hash function.
 make_hashes = (hash, k) ->
