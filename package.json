@@ -4,8 +4,8 @@
 	"author": "Miikka Koskinen <miikka.koskinen@iki.fi> (http://miikka.me/)",
 	"bin": "./bin/bloomdump.coffee",
 	"dependencies": {
-		"coffee-script": "1.3.x",
-		"canvas": "0.13.x",
+		"coffee-script": "1.7.1",
+		"canvas": "1.1.3",
 		"mustache": "0.3.x",
 		"rational": "0.2.x"
 	},
