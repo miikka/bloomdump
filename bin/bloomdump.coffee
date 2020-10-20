@@ -4,7 +4,7 @@ fs     = require('fs')
 path   = require('path')
 crypto = require('crypto')
 
-Canvas       = require('canvas')
+{ createCanvas, Canvas } = require('canvas')
 CoffeeScript = require('coffee-script')
 Rational     = require('rational').Rational
 Mustache     = require('mustache')
@@ -43,10 +43,10 @@ try
 	filename = result.extras[2]
 
 	throw ("Input file name is required.") unless filename?
-	throw ("Input file not found: #{filename}") unless path.existsSync(filename)
+	throw ("Input file not found: #{filename}") unless fs.existsSync(filename)
 
 	templatePath = result.options.template unless result.options.template == true
-	throw ("Template not found: #{templatePath}") unless path.existsSync(templatePath)
+	throw ("Template not found: #{templatePath}") unless fs.existsSync(templatePath)
 
 	errorRate = parseFloat(result.options.e)
 	throw ("Error rate should be a float between 0 and 1: #{errorRate}") unless 0 < errorRate < 1
@@ -81,7 +81,7 @@ hex_sha1 = (str) ->
 class EasyBloomFilter extends BloomFilter
 	constructor: (@capacity, @error_rate) ->
 		[m, k] = calculate_filter_length(@capacity, @error_rate)
-		canvas = new Canvas(Math.ceil(m/(24*400)), 400)
+		canvas = createCanvas(Math.ceil(m/(24*400)), 400)
 		backend = new CanvasBackend(canvas)
 		super(backend, m, k, hex_sha1)
 

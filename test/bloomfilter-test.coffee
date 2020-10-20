@@ -4,7 +4,7 @@ vows   = require('vows')
 assert = require('assert')
 sha1   = require('../vendor/sha1.js')
 
-Canvas = require('canvas')
+{ createCanvas, Canvas } = require('canvas')
 
 bloomfilter = require('../lib/bloomfilter')
 
@@ -41,13 +41,13 @@ testBackend = (name, createBackend, size) ->
 	
 	batch
 
-createCanvas = (size) ->
-	canvas = new Canvas(Math.ceil(size/10), 10)
+newCanvas = (size) ->
+	canvas = createCanvas(Math.ceil(size/10), 10)
 	new CanvasBackend(canvas)
 
 suite = vows.describe('Bloom filter')
 
-suite.addBatch(testBackend('CanvasBackend', createCanvas, 49 * 3))
+suite.addBatch(testBackend('CanvasBackend', newCanvas, 49 * 3))
 suite.addBatch(testBackend('TypedArrayBackend', ((size) -> new TypedArrayBackend(size)), 49 * 3))
 
 suite.addBatch(
@@ -55,11 +55,11 @@ suite.addBatch(
 		topic: ->
 			size= 49 * 3
 
-			backend1 = createCanvas(size)
+			backend1 = newCanvas(size)
 			for idx in [0..size]
 				backend1.set(idx) if Math.floor(Math.random * 2) == 1
 
-			backend2 = createCanvas(size)
+			backend2 = newCanvas(size)
 			backend2.load(backend1.toDataURL())
 
 			[backend1, backend2]
@@ -72,14 +72,14 @@ suite.addBatch(
 
 suite.addBatch(
 	'An empty BloomFilter':
-		topic: -> new BloomFilter(createCanvas(49*3), 49, 3, sha1.hex_sha1)
+		topic: -> new BloomFilter(newCanvas(49*3), 49, 3, sha1.hex_sha1)
 
 		'should not contain any elements': (bf) ->
 			assert.equal(bf.has('test1'), false)
 
 	'A BloomFilter with one element':
 		topic: ->
-			bf = new BloomFilter(createCanvas(49 * 3), 49, 3, sha1.hex_sha1)
+			bf = new BloomFilter(newCanvas(49 * 3), 49, 3, sha1.hex_sha1)
 			bf.add('test1')
 
 		'should contain the element': (bf) ->

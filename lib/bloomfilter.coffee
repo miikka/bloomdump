@@ -1,5 +1,5 @@
 root  = exports ? this
-Image = if window? then Image else require('canvas').Image
+Image = if window? then window.Image else require('canvas').Image
 
 # Generate k different hashes using the given hash function.
 make_hashes = (hash, k) ->
