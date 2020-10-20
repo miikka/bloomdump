@@ -105,4 +105,4 @@ ctx =
 	filename:    path.basename(filename)
 	version:     VERSION
 
-console.log(Mustache.to_html(template, ctx))
+console.log(Mustache.render(template, ctx))
