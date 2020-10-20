@@ -6,7 +6,7 @@
 	"dependencies": {
 		"coffee-script": "^1.7.1",
 		"canvas": "^2.6.1",
-		"mustache": "0.4.x",
+		"mustache": "2.2.x",
 		"rational": "0.2.x"
 	},
 	"devDependencies": {
